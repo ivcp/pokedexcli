@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func commandMap(c *config) error {
+func commandMap(c *config, args ...string) error {
 	res, err := c.pokeapiClient.ListLocationAreas(c.Next)
 	if err != nil {
 		return err
@@ -19,7 +19,7 @@ func commandMap(c *config) error {
 	return nil
 }
 
-func commandMapb(c *config) error {
+func commandMapb(c *config, args ...string) error {
 	if c.Prevoius == nil {
 		return errors.New("No previous page")
 	}

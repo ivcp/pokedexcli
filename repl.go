@@ -14,12 +14,17 @@ func repl(cfg *config) {
 		fmt.Print("pokedex > ")
 		scanner.Scan()
 
-		input := strings.ToLower(scanner.Text())
+		input := strings.Fields(strings.ToLower(scanner.Text()))
 
 		command := getCommands()
+		args := []string{}
 
-		if c, ok := command[input]; ok {
-			err := c.callback(cfg)
+		if len(input) > 1 {
+			args = input[1:]
+		}
+
+		if c, ok := command[input[0]]; ok {
+			err := c.callback(cfg, args...)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -33,7 +38,7 @@ func repl(cfg *config) {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -57,6 +62,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Diplays previous 20 locations",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Explore a location",
+			callback:    commandExplore,
 		},
 	}
 }
