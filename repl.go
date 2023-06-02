@@ -5,7 +5,16 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/ivcp/pokedexcli/internal/pokeapi"
 )
+
+type config struct {
+	pokeapiClient pokeapi.Client
+	Next          *string
+	Prevoius      *string
+	caughtPokemon map[string]pokeapi.Pokemon
+}
 
 func repl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
@@ -67,6 +76,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore",
 			description: "Explore a location",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Try to catch a pokemon",
+			callback:    commandCatch,
 		},
 	}
 }
